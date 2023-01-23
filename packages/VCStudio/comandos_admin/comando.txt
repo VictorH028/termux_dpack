@@ -1,0 +1,5 @@
+1.:h coc-config-languageserver
+los ajustes comunes de la configuración del servidor de idiomas.
+
+2.:CheckHealth
+Eso ayudará a determinar dónde podría estar el problema (pero se parece más a un problema de configuración de neovim).

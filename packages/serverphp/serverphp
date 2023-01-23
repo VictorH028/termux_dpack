@@ -1,0 +1,75 @@
+#!/bin/python
+
+import sys
+import os
+import optparse
+import netifaces
+#apachectl -k stop
+
+baner = """
+      .d88b. 8888 888b. Yb    dP 8888 888b. 888b. 8   8 888b. 
+      YPwww. 8www 8  .8  Yb  dP  8www 8  .8 8  .8 8www8 8  .8 
+          d8 8    8wwK'   YbdP   8    8wwK' 8wwP' 8   8 8wwP' 
+      `Y88P' 8888 8  Yb    YP    8888 8  Yb 8     8   8 8     
+                                                         """
+Red    = '\u001b[31m' #rojo
+Green  = '\u001b[32m' #verde
+Yellow = '\u001b[33m' #amarill
+Blue   = '\u001b[34m' #Azul
+Magenta= '\u001b[35m' #magenta
+Cyan   = '\u001b[36m' #cian
+rest   =  '\u001b[0m'
+
+interfas = netifaces.interfaces()
+
+
+usage  =  baner + '\n' + "%prog "+ str(interfas) +" <port number> <dir path>"
+parser = optparse.OptionParser(usage,version='%prog 0.5')
+parser.add_option('--port',
+    type='string',
+    dest='PORT',
+    default='4546',
+    help = 'You can take a port of your choice '
+                     )
+parser.add_option('--host',
+    type='string',
+    default= 'lo',
+    dest = 'INTERFA',
+    help = 'You can choose one of your network interfaces' + str(interfas)
+                      )
+parser.add_option('--path',
+    type='string',
+    default=  os.path.expandvars('$HOME') + "/.local/var/service/www",
+    dest='DIR',
+    help = 'server path' )
+parser.add_option("--show",
+    action="store_true",
+    dest="show",
+    help="holaskosdkf" )
+    
+
+(options, args) = parser.parse_args()
+
+def serverphp():
+    
+    ip = netifaces.ifaddresses(options.INTERFA)
+    
+    sys.stdout.write(Green + baner + rest + '\n')
+    sys.stdout.write(Red + '╰─(_➤) Running service with default settings \n')
+    sys.stdout.write(Yellow + '╰─[YOUR NETWORK INTERFA]─➤' + Magenta + str(interfas) + '\n')
+    sys.stdout.write(Yellow + '╰─[INT]─➤  ' +rest  +Magenta+ options.INTERFA + '\n' + rest)
+    sys.stdout.write(Yellow + '╰─[IP]─➤   ' +rest  +Red+ip[2][0].get('addr')+'\n')
+    sys.stdout.write(Yellow + '╰─[PORT]─➤ ' +rest  +Magenta+  options.PORT + '\n' + rest) 
+    sys.stdout.write(Yellow + '╰─[DIR]──➤ ' +rest  +Cyan+  options.DIR  +'\n' + Green)
+    os.system('php -S ' +  ip[2][0].get('addr') + ':' + options.PORT + ' -t ' + options.DIR )
+    
+    
+    
+if __name__ == "__main__":
+    if options.show == True:
+        print("hoadnnfikmc")
+    
+
+
+#Demon {}
+

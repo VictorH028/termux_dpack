@@ -1,0 +1,138 @@
+#!/bin/python
+#Para ejecutar comandos
+def cdm(arg):
+    r = subprocess.run([arg],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=True)
+    if r.returncode == 0:
+        pass
+    else:
+        print("[*]>Erro al Instalar")
+import sys
+import subprocess
+import os
+import optparse
+from requests import options
+try:
+    import requests
+    import optparse
+except ModuleNotFoundError:
+    print('Se esta Instalando requests')
+    cdm('python -m pip install requests optparse')
+#///////////////////////////////////    
+#Varables 
+PREFIX = os.path.expandvars('$PREFIX')
+HOME = os.path.expandvars("$HOME")
+#Linea de comandos
+usage = '%prog [options]'
+parser = optparse.OptionParser(usage,version='%prog 0.1')
+parser.add_option('--install'
+        ,help='Configure everything for nvim'
+        ,action="store_true"
+        ,dest='INS'
+        )
+(options , argv) = parser.parse_args()
+#Demendencias
+pip = 'pipenv','pynvim','jedi'
+apt = 'git','neovim','nodejs'
+#//////////////////////////////////////////////
+def Plugins():
+    sys.stdout.write("[*]>Instalando algunos plugins\n")
+    os.system('rm bash.sh 2> /dev/null')
+    cdm("wget https://raw.githubusercontent.com/Demom89/VCStudio-/main/bash.sh")
+    os.system(' bash bash.sh')
+#///////////////////////////////////////////
+def apt_d():
+    sys.stdout.write("[*]>Instalando dependencias\n")
+    for x in apt:
+        cdm('apt install ' + x + ' -y')
+#/////////////////////////////////////////////////
+def pip_d():
+    sys.stdout.write("[*]>Instalando dependencias de pip\n")
+    for x in pip :
+        cdm('pip install ' + x )
+#///////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////        
+def ambiente_virtual():
+    ruta = HOME + '/.config/nvim'
+    sys.stdout.write("[*]>creando entorno virtual\n")
+    os.chdir(ruta)
+    if not os.path.exists( HOME +'/.config/nvim/Pipfile'):
+        os.system('pipenv --rm')
+        os.system('pipenv install')
+        os.system('pwd')
+    else:
+        sys.stdout.write("[*]>Ya tienes un entorno virtual\n")
+#//////////////////////////////////////////////////////////////////
+def download(remote_url,local_file):
+    # Se envía la petición HTTP Get para la obtención del recurso
+    data = requests.get(remote_url)
+    # Guardamos el archivo de manera local
+    with open(local_file, 'wb') as file:
+        file.write(data.content)
+        file.close
+#//////////////////////////////////////////////////////////////////////
+def archivos_donwload():
+    sys.stdout.write('[*]>Todo lo del directorio  .config/nvim  🅂🅄🄵🅁í🅁🄰 modificasiones\n')
+
+    os.chdir(HOME+'/.config/nvim/')
+    download('https://raw.githubusercontent.com/Demom89/VCStudio-/main/home/nvim/init.vim','init.vim')
+    download('https://raw.githubusercontent.com/Demom89/VCStudio-/main/home/nvim/Coc-Settings.Json','Coc-Settings.Json')
+    
+    os.chdir(HOME + "/.config/nvim/plug-config/")
+    download('https://raw.githubusercontent.com/Demom89/VCStudio-/main/home/nvim/plug-config/airline.vim','airline.vim')
+    download('https://raw.githubusercontent.com/Demom89/VCStudio-/main/home/nvim/plug-config/coc.vim','coc.vim')
+    download('https://raw.githubusercontent.com/Demom89/VCStudio-/main/home/nvim/plug-config/nerdcommenter.vim','nerdcommenter.vim')
+
+    os.chdir(HOME + "/.config/nvim/keymapping/")
+    download('https://raw.githubusercontent.com/Demom89/VCStudio-/main/home/nvim/keymapping/keys.vim','keys.vim')
+
+    os.chdir(HOME + "/.config/nvim/general/")
+    download('https://raw.githubusercontent.com/Demom89/VCStudio-/main/home/nvim/general/settings.vim','settings.vim')
+
+    os.chdir(HOME + "/.config/nvim/nvim-plugins/")
+    download('https://raw.githubusercontent.com/Demom89/VCStudio-/main/home/nvim/nvim-plugins/plugins.vim','plugins.vim')
+    #Actualizacion de VCSt
+    os.chdir(PREFIX + '/bin')
+    download('https://raw.githubusercontent.com/Demom89/VCStudio-/main/VCSt','VCSt')
+    os.system('chmod +x $PREFIX/bin/VCSt')
+    sys.stdout.write('Tienes un nuevo comando  <VCSt>\n')
+   
+#/////////////////////////////////////////////////////////////////
+def lenguage (arv):
+    if arv in ("-py",'--python'):
+        os.system('nvim +CocInstall coc-pyright +x +x')
+    elif arv in ("-ph","--php"):
+        os.system("nvim +CocInstall coc-phpls +x +x")
+    else:
+        print("A pasado algo ")
+#////////////////////////////////////////////////////////////////////////
+def baner():
+    r =  sys.stdout.write("""
+_ █████   █████   █████████   █████████   █████                   █████  ███          
+░░███   ░░███   ███░░░░░███ ███░░░░░███ ░░███                   ░░███  ░░░           
+ ░███    ░███  ███     ░░░ ░███    ░░░  ███████   █████ ████  ███████  ████   ██████ 
+ ░███    ░███ ░███         ░░█████████ ░░░███░   ░░███ ░███  ███░░███ ░░███  ███░░███
+ ░░███   ███  ░███          ░░░░░░░░███  ░███     ░███ ░███ ░███ ░███  ░███ ░███ ░███
+  ░░░█████░   ░░███     ███ ███    ░███  ░███ ███ ░███ ░███ ░███ ░███  ░███ ░███ ░███
+    ░░███      ░░█████████ ░░█████████   ░░█████  ░░████████░░████████ █████░░██████ 
+     ░░░        ░░░░░░░░░   ░░░░░░░░░     ░░░░░    ░░░░░░░░  ░░░░░░░░ ░░░░░  ░░░░░░  
+                                                                                     
+    Ⓐⓤⓣⓞⓡ: 𝕯𝖊𝖒𝖔𝖓                                                    
+\n""")
+    return r
+#////////////////////////////////////////////////
+if __name__ == "__main__":
+    if options.INS == True :
+        baner() #---------> 1
+        #os.system('mkdir -p $HOME/.config/nvim/{general,keymapping,nvim-plugins,plug-config}')
+        if not  os.path.exists(HOME + "/.config/nvim/"):
+            print("Creando directorios necesarios... ")
+            os.makedirs(HOME + "/.config/nvim/")
+            os.chdir(HOME + "/.config/nvim")
+            map(os.makedirs,('general','keymapping','nvim-plu','plug-config'))
+        else:
+            print("Me as ejecutado denuevo why ")
+
+
