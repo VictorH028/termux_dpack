@@ -1,0 +1,3 @@
+Pase un puntero a la URL con la que trabajar. El parámetro debe ser un carácter * para una cadena terminada en nulo que debe codificarse como URL en el siguiente formato:
+
+esquema://host:puerto/ruta

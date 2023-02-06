@@ -1,0 +1,7 @@
+Un puntero de datos para pasar a la devolución de llamada de
+escritura. Si usa la opción CURLOPT_WRITEFUNCTION , este es
+el puntero que obtendrá en el cuarto y último argumento de
+la devolución de llamada. Si no usa una devolución de
+llamada de escritura, debe hacer que el puntero sea 'ARCHIVO *'
+(convertido en 'vacío *') ya que libcurl pasará esto a fwrite(3) 
+al escribir datos.
